@@ -1,48 +1,37 @@
 class Solution {
     public List<Integer> eventualSafeNodes(int[][] graph) {
-        int n = graph.length;
-
-        List<List<Integer>> adj = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            adj.add(new ArrayList<>());
-        }
-
-        int[] indegree = new int[n];
-
-        // Reverse graph
-        for (int i = 0; i < n; i++) {
-            for (int node : graph[i]) {
-                adj.get(node).add(i);
-                indegree[i]++;
+        int n=graph.length;
+        boolean[] vis= new boolean[n];
+        boolean[] path=new boolean[n];
+        boolean[] safe=new boolean[n];
+        for(int i=0;i<n;i++){
+            if(!vis[i]){
+                check(i,graph,vis,path,safe);
             }
         }
-
-        Queue<Integer> queue = new LinkedList<>();
-        List<Integer> ans = new ArrayList<>();
-
-        // Terminal nodes
+        List<Integer> safeNodes = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            if (indegree[i] == 0) {
-                queue.offer(i);
-            }
+            if (safe[i] == true) safeNodes.add(i);
         }
+ 
+        return safeNodes;
 
-        // Kahn's BFS
-        while (!queue.isEmpty()) {
-            int node = queue.poll();
-            ans.add(node);
+    }
+    public boolean check(int node,int[][] graph ,boolean[] vis,boolean[] path ,boolean[] safe){
+        vis[node] = true; 
+        path[node] = true;  
 
-            for (int neighbor : adj.get(node)) {
-                indegree[neighbor]--;
-
-                if (indegree[neighbor] == 0) {
-                    queue.offer(neighbor);
+        for(int neighbor:graph[node]){
+            if(vis[neighbor]==false){
+                if(check(neighbor ,graph,vis,path,safe)){
+                    return true;
                 }
+            }else if(path[neighbor]==true){
+                return true;
             }
         }
-
-        Collections.sort(ans);
-
-        return ans;
+        safe[node]=true;
+        path[node]=false;
+        return false;
     }
 }
