@@ -1,27 +1,47 @@
 class Solution {
 
+    Integer[][] dp;
+    int offset;
+
     public int findTargetSumWays(int[] nums, int target) {
 
         int n = nums.length;
 
+        int totalSum = 0;
+
+        for(int num : nums){
+            totalSum += num;
+        }
+
+        offset = totalSum;
+
+        dp = new Integer[n][2 * totalSum + 1];
+
         return helper(n - 1, 0, nums, target);
     }
 
-    public int helper(int index, int sum, int[] nums, int target) {
+    public int helper(int index,
+                      int sum,
+                      int[] nums,
+                      int target) {
+
+        if(dp[index][sum + offset] != null){
+            return dp[index][sum + offset];
+        }
 
         if(index == 0){
 
-            if(sum + nums[0] == target &&
-               sum - nums[0] == target){
-                return 2;
+            int ans = 0;
+
+            if(sum + nums[0] == target){
+                ans++;
             }
 
-            if(sum + nums[0] == target ||
-               sum - nums[0] == target){
-                return 1;
+            if(sum - nums[0] == target){
+                ans++;
             }
 
-            return 0;
+            return dp[index][sum + offset] = ans;
         }
 
         int pickplus =
@@ -36,6 +56,7 @@ class Solution {
                    nums,
                    target);
 
-        return pickplus + pickminus;
+        return dp[index][sum + offset]
+                = pickplus + pickminus;
     }
 }
