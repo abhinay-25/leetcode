@@ -1,24 +1,26 @@
 class Solution {
     public int minDistance(String word1, String word2) {
-        char[] str1 = word1.toCharArray();
-        char[] str2 = word2.toCharArray();
-        int n = str1.length;
-        int m = str2.length;
+        int lcs = longestCommonSubsequence(word1, word2);
+
+        return (word1.length() - lcs) + (word2.length() - lcs);
+    }
+
+    public int longestCommonSubsequence(String s, String r) {
+        int n = s.length();
+        int m = r.length();
 
         int[][] dp = new int[n + 1][m + 1];
 
-        // Standard LCS DP approach
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= m; j++) {
-                if (str1[i - 1] == str2[j - 1]) {
-                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                if (s.charAt(i - 1) == r.charAt(j - 1)) {
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
                 } else {
                     dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
                 }
             }
         }
-        
-        // Final Formula: n + m - 2 * LCS
-        return n + m - 2 * dp[n][m];
+
+        return dp[n][m];
     }
 }
