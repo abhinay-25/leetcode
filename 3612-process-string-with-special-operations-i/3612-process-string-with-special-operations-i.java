@@ -9,7 +9,7 @@ class Solution {
                 }
                 
             }else if(s.charAt(i)=='#'){
-                sb.append(new StringBuilder(sb));
+                sb.append(sb);
             }else if(s.charAt(i)=='%'){
                 sb.reverse();
             }else{
