@@ -6,7 +6,9 @@ class Solution {
         return result;
     }
     void helper(int index,List<List<Integer>> result,List<Integer> curr,int sum,int target ,int[] candidates){
-        
+        if(sum>target){
+            return;
+        }
         if(index<0){
             if(sum==target){
             result.add(new ArrayList<>(curr));
