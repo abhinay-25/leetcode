@@ -1,17 +1,34 @@
 class Solution {
-    public int findGCD(int[] nums) {
-        Arrays.sort(nums);
-        int small=nums[0];
-        int large=nums[nums.length-1];
-        return gcd(small,large);
-    }
-    int gcd(int small,int large){
-        while(large!=0){
-            int temp=large;
-            large=small%large;
-            small=temp;
 
+    public int findGCD(int[] nums) {
+
+        int min = nums[0];
+        int max = nums[0];
+
+        
+        for (int i = 0; i < nums.length; i++) {
+
+            if (nums[i] < min) {
+                min = nums[i];
+            }
+
+            if (nums[i] > max) {
+                max = nums[i];
+            }
         }
-        return small;
+
+        return gcd(min, max);
+    }
+
+    public int gcd(int a, int b) {
+
+        while (b != 0) {
+
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+
+        return a;
     }
 }
